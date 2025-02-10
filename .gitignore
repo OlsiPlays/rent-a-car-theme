@@ -16,7 +16,9 @@
 /readme.html
 /wp-*.php
 /xmlrpc.php
-
+node_modules
+package-lock.json
+package.json
 # Configuration
 wp-config.php
 
