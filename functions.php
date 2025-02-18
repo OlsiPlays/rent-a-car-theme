@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Register Custom Post Type: Car
 function create_car_post_type() {
@@ -26,6 +26,33 @@ function create_car_post_type() {
 }
 add_action('init', 'create_car_post_type');
 
+// Register Custom Taxonomy for Car Types
+function create_car_type_taxonomy() {
+    $args = array(
+        'labels' => array(
+            'name'          => 'Car Types',
+            'singular_name' => 'Car Type',
+            'search_items'  => 'Search Car Types',
+            'all_items'     => 'All Car Types',
+            'parent_item'   => 'Parent Car Type',
+            'parent_item_colon' => 'Parent Car Type:',
+            'edit_item'     => 'Edit Car Type',
+            'update_item'   => 'Update Car Type',
+            'add_new_item'  => 'Add New Car Type',
+            'new_item_name' => 'New Car Type Name',
+            'menu_name'     => 'Car Types',
+        ),
+        'hierarchical' => true,
+        'show_ui'      => true,
+        'show_in_rest' => true,
+        'show_admin_column' => true,
+        'query_var'     => true,
+        'rewrite'       => array('slug' => 'car-type'),
+    );
+    register_taxonomy('car_type', 'car', $args);
+}
+add_action('init', 'create_car_type_taxonomy');
+
 // Enable Featured Image Support
 function add_featured_image_support() {
     add_theme_support('post-thumbnails');
@@ -37,7 +64,7 @@ add_action('after_setup_theme', 'add_featured_image_support');
 function car_custom_meta_boxes() {
     add_meta_box('car_details_meta_box', 'Car Details', 'car_details_meta_box_callback', 'car', 'normal', 'high');
 }
-add_action('add_meta_boxes_car', 'car_custom_meta_boxes'); // Ensures correct hook for Car post type
+add_action('add_meta_boxes_car', 'car_custom_meta_boxes');
 
 // Meta Box Callback Function for Car Details
 function car_details_meta_box_callback($post) {
@@ -153,16 +180,86 @@ function custom_flush_rewrite_rules() {
 }
 register_activation_hook(__FILE__, 'custom_flush_rewrite_rules');
 
+// Add Price Filter to Car Archive Page
+function car_price_filter_widget() {
+    global $wp_query;
 
+    // Get min and max prices from the cars
+    $prices = get_posts(array(
+        'post_type'      => 'car',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+    ));
+    
+    $min_price = 0;
+    $max_price = 1000000; // Arbitrary high price
 
-function enqueue_slick_slider() {
-    // Enqueue Slick Carousel JS and CSS
-    wp_enqueue_script('slick-js', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js', array('jquery'), null, true);
-    wp_enqueue_style('slick-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css');
-    wp_enqueue_style('slick-theme-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css');
+    foreach ($prices as $post_id) {
+        $price = get_post_meta($post_id, '_car_price', true);
+        if ($price) {
+            $min_price = min($min_price, $price);
+            $max_price = max($max_price, $price);
+        }
+    }
+
+    // Generate the filter form
+    echo '<form action="' . esc_url(home_url('/')) . '" method="GET" class="price-filter-form">';
+    echo '<label for="price_range">Filter by Price:</label>';
+    echo '<input type="hidden" name="post_type" value="car">';
+    echo '<input type="range" name="price_range" min="' . esc_attr($min_price) . '" max="' . esc_attr($max_price) . '" step="1000" value="' . esc_attr($max_price) . '" />';
+    echo '<input type="submit" value="Apply Filter" />';
+    echo '</form>';
 }
-add_action('wp_enqueue_scripts', 'enqueue_slick_slider');
+add_action('widget_area', 'car_price_filter_widget'); // Or add it to a specific place like sidebar
 
+// Modify the main car query to include car type and price filtering
+function modify_car_query($query) {
+    if (!is_admin() && $query->is_main_query() && is_post_type_archive('car')) {
+        // Filter by Car Type
+        if (isset($_GET['car_type']) && !empty($_GET['car_type'])) {
+            $query->set('tax_query', array(
+                array(
+                    'taxonomy' => 'car_type',
+                    'field'    => 'id',
+                    'terms'    => $_GET['car_type'],
+                    'operator' => 'IN',
+                ),
+            ));
+        }
 
+        // Filter by Price
+        if (isset($_GET['price_range']) && !empty($_GET['price_range'])) {
+            $query->set('meta_query', array(
+                array(
+                    'key'     => '_car_price',
+                    'value'   => $_GET['price_range'],
+                    'compare' => '<=',
+                    'type'    => 'NUMERIC',
+                ),
+            ));
+        }
+    }
+}
+add_action('pre_get_posts', 'modify_car_query');
+
+// Display Car Types Filter Dropdown
+function display_car_type_filter() {
+    $car_types = get_terms(array(
+        'taxonomy'   => 'car_type',
+        'orderby'    => 'name',
+        'hide_empty' => false,
+    ));
+
+    echo '<form action="' . esc_url(home_url('/')) . '" method="GET">';
+    echo '<label for="car_type">Filter by Car Type:</label>';
+    echo '<select name="car_type" id="car_type" onchange="this.form.submit()">';
+    echo '<option value="">Select Car Type</option>';
+    foreach ($car_types as $car_type) {
+        echo '<option value="' . $car_type->term_id . '">' . $car_type->name . '</option>';
+    }
+    echo '</select>';
+    echo '</form>';
+}
 
 ?>
+

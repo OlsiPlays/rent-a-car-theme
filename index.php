@@ -129,18 +129,21 @@
 
 
 
-<section class="py-16 bg-[#040404] text-white">
+<section class="py-20 bg-[#0a0a0a] text-white">
     <div class="container mx-auto px-6 text-center">
-        <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 relative inline-block">
-            Explore Our Cars
-            <span class="absolute -bottom-2 left-1/2 w-24 h-1 bg-[#da100a] transform -translate-x-1/2"></span>
+        <h2 class="text-5xl md:text-6xl font-extrabold text-white mb-16 relative inline-block">
+            Explore Our Luxury Fleet
+            <span class="absolute -bottom-3 left-1/2 w-32 h-1 bg-[#da100a] transform -translate-x-1/2"></span>
         </h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
             <?php
+            // Set posts_per_page to 3
             $args = array(
                 'post_type' => 'car',
-                'posts_per_page' => 6,
+                'posts_per_page' => 3, // Limit to 3 posts
+                'orderby' => 'date',
+                'order' => 'DESC',
             );
             $car_query = new WP_Query($args);
 
@@ -152,47 +155,39 @@
                     $mileage = get_post_meta(get_the_ID(), '_car_mileage', true);
                     $price = get_post_meta(get_the_ID(), '_car_price', true);
                     
-                    $image_1 = get_post_meta(get_the_ID(), '_car_image_1', true);
-                    $image_2 = get_post_meta(get_the_ID(), '_car_image_2', true);
-                    $image_3 = get_post_meta(get_the_ID(), '_car_image_3', true);
-                    
-                    $first_image_url = !empty($image_1) ? esc_url($image_1) : get_template_directory_uri() . '/images/default-car.jpg';
-                    $second_image_url = !empty($image_2) ? esc_url($image_2) : $first_image_url;
-                    $third_image_url = !empty($image_3) ? esc_url($image_3) : $first_image_url;
+                    $image = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                    $image_url = !empty($image) ? esc_url($image) : get_template_directory_uri() . '/images/default-car.jpg';
                     ?>
-                    <div class="group bg-[#1c1c1c] rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-[1.05] hover:shadow-xl relative">
-                        <!-- Image Slider -->
-                        <div class="relative w-full h-60 overflow-hidden">
-                            <img src="<?php echo $first_image_url; ?>" alt="<?php the_title(); ?>" class="w-full h-full object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0">
-                            <img src="<?php echo $second_image_url; ?>" alt="<?php the_title(); ?>" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <div class="group relative bg-[#121212] rounded-3xl overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+                        
+                        <!-- Image with Overlay Text -->
+                        <div class="relative w-full h-96">
+                            <img src="<?php echo $image_url; ?>" alt="<?php the_title(); ?>" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-center p-6">
+                                <!-- Text Inside the Image -->
+                                <div class="z-10 text-white">
+                                    <h3 class="text-4xl font-extrabold mb-4"><?php the_title(); ?></h3>
+                                    <p class="text-lg mb-2"><?php echo esc_html($brand); ?> | <?php echo esc_html($production_year); ?></p>
+                                    <p class="text-lg mb-4"><?php echo esc_html($color); ?> | <?php echo esc_html($mileage); ?> km</p>
+                                    <p class="text-2xl text-[#da100a] font-semibold mb-6">$<?php echo esc_html($price); ?></p>
+                                    <a href="<?php the_permalink(); ?>" class="inline-block px-6 py-3 bg-[#da100a] text-white text-lg font-semibold rounded-lg shadow-md hover:bg-white hover:text-[#da100a] transition duration-300">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Info Section -->
-                        <div class="p-6 text-center relative">
-                            <h3 class="text-2xl font-semibold text-white"><?php the_title(); ?></h3>
-                            <p class="text-lg text-gray-300">Brand: <?php echo esc_html($brand); ?></p>
-                            <p class="text-sm text-gray-400">Year: <?php echo esc_html($production_year); ?></p>
-                            <p class="text-sm text-gray-400">Color: <?php echo esc_html($color); ?></p>
-                            <p class="text-sm text-gray-400">Mileage: <?php echo esc_html($mileage); ?> km</p>
-                            <p class="text-lg text-[#da100a] font-bold">Price: $<?php echo esc_html($price); ?></p>
-                            <a href="<?php the_permalink(); ?>" class="inline-block mt-4 px-6 py-2 bg-[#da100a] text-white text-lg font-semibold rounded-lg shadow-md hover:bg-white hover:text-[#da100a] transition duration-300 relative z-10">
-                                Book Now
-                            </a>
-                        </div>
-
-                        <!-- Glowing Effect -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#da100a]/30 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
                     </div>
                     <?php
                 endwhile;
                 wp_reset_postdata();
             else:
-                echo '<p class="text-white">No cars available at the moment.</p>';
+                echo '<p class="text-white text-lg">No cars available at the moment.</p>';
             endif;
             ?>
         </div>
     </div>
 </section>
+
 
 
 
