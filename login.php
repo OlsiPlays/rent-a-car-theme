@@ -1,5 +1,5 @@
 <?php
-/* Template Name: Custom Signup */
+/* Template Name: Custom Login */
 ?>
 
 <!DOCTYPE html>
@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup - Car Garage</title>
+    <title>Login - Car Garage</title>
     <style>
         /* General Styling */
         * {
@@ -34,7 +34,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.85); /* Darker background */
             z-index: -1;
         }
 
@@ -50,9 +50,9 @@
         /* Speedometer-Inspired Animation */
         .speedometer {
             position: absolute;
-            width: 15vw;
-            height: 15vw;
-            max-width: 200px;
+            width: 15vw; /* Smaller width */
+            height: 15vw; /* Smaller height */
+            max-width: 200px; /* Maximum size */
             max-height: 200px;
             border-radius: 50%;
             border: 2px solid rgba(255, 0, 0, 0.9);
@@ -66,36 +66,36 @@
             100% { transform: rotate(180deg); filter: blur(3px); border-color: rgba(255, 0, 0, 1); }
         }
 
-        /* Signup Box */
-        .signup-box {
+        /* Login Box */
+        .login-box {
             position: relative;
             background: rgba(0, 0, 0, 0.9);
-            padding: 2.5vw;
+            padding: 2.5vw; /* Smaller padding */
             border-radius: 10px;
             text-align: center;
             backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 1);
-            width: 70%;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 1); /* Fully red */
+            width: 70%; /* Smaller width */
             max-width: 300px;
             z-index: 1;
         }
 
         /* Heading */
-        .signup-box h2 {
+        .login-box h2 {
             color: white;
-            margin-bottom: 15px;
-            font-size: 1.5em;
+            margin-bottom: 15px; /* Smaller margin */
+            font-size: 1.5em; /* Smaller size */
         }
 
         /* Input Fields */
-        .signup-box input {
+        .login-box input {
             width: 100%;
-            padding: 0.8em;
-            margin: 0.4em 0;
+            padding: 0.8em; /* Smaller padding */
+            margin: 0.4em 0; /* Smaller margin */
             border: none;
             border-radius: 5px;
             outline: none;
-            font-size: 0.9em;
+            font-size: 0.9em; /* Smaller size */
             background: rgba(255, 255, 255, 0.1);
             color: white;
             text-align: center;
@@ -106,16 +106,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 0.8em;
+            margin-top: 0.8em; /* Smaller margin */
+        }
+
+        .forgot {
+            color: white;
+            font-size: 0.7em; /* Smaller size */
+            text-decoration: none;
+            margin-bottom: 0.4em; /* Smaller margin */
         }
 
         button {
-            padding: 0.8em 1.5em;
+            padding: 0.8em 1.5em; /* Smaller padding */
             border: none;
             border-radius: 5px;
             background: linear-gradient(90deg, red, darkred, red);
             color: white;
-            font-size: 0.9em;
+            font-size: 0.9em; /* Smaller size */
             cursor: pointer;
             transition: 0.3s;
             width: 100%;
@@ -126,60 +133,52 @@
             transform: scale(1.05);
         }
 
-        .login-link {
-            color: white;
-            font-size: 0.8em;
-            text-decoration: none;
-            margin-top: 10px;
-            display: block;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .speedometer {
-                width: 18vw;
-                height: 18vw;
+                width: 18vw; /* Smaller width */
+                height: 18vw; /* Smaller height */
                 max-width: 180px;
                 max-height: 180px;
             }
 
-            .signup-box {
-                padding: 6vw;
+            .login-box {
+                padding: 6vw; /* Smaller padding */
                 width: 85%;
             }
 
-            .signup-box h2 {
-                font-size: 1.3em;
+            .login-box h2 {
+                font-size: 1.3em; /* Smaller size */
             }
 
-            .signup-box input {
-                font-size: 0.9em;
+            .login-box input {
+                font-size: 0.9em; /* Smaller size */
             }
 
             button {
-                padding: 0.6em 1.2em;
+                padding: 0.6em 1.2em; /* Smaller padding */
             }
         }
 
         @media (max-width: 480px) {
             .speedometer {
-                width: 20vw;
-                height: 20vw;
+                width: 20vw; /* Smaller width */
+                height: 20vw; /* Smaller height */
                 max-width: 150px;
                 max-height: 150px;
             }
 
-            .signup-box {
-                padding: 8vw;
+            .login-box {
+                padding: 8vw; /* Smaller padding */
                 width: 90%;
             }
 
-            .signup-box h2 {
-                font-size: 1.1em;
+            .login-box h2 {
+                font-size: 1.1em; /* Smaller size */
             }
 
             button {
-                padding: 0.8em;
+                padding: 0.8em; /* Smaller padding */
             }
         }
     </style>
@@ -188,18 +187,16 @@
 
 <div class="container">
     <div class="speedometer"></div>
-    <div class="signup-box">
-        <h2>Rent a Car Signup</h2>
-        <form action="<?php echo wp_registration_url(); ?>" method="post">
-            <input type="text" name="user_login" placeholder="Username" required>
-            <input type="email" name="user_email" placeholder="Email" required>
-            <input type="password" name="user_pass" placeholder="Password" required>
-            <input type="password" name="user_pass_confirm" placeholder="Confirm Password" required>
+    <div class="login-box">
+        <h2>Rent a Car Login</h2>
+        <form action="<?php echo wp_login_url(home_url()); ?>" method="post">
+            <input type="text" name="log" placeholder="Username" required>
+            <input type="password" name="pwd" placeholder="Password" required>
             <div class="buttons">
+                <a href="<?php echo wp_lostpassword_url(); ?>" class="forgot">Forgot Password?</a>
                 <button type="submit">Start Engine</button>
             </div>
         </form>
-        <a href="<?php echo home_url('/login'); ?>" class="login-link">Already have an account? Login</a>
     </div>
 </div>
 
