@@ -1,91 +1,85 @@
 <?php
 /**
- * Footer Template for Rent-a-Car Theme
+ * Footer Template for Rent A Car Theme
  */
 ?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
 
 <footer class="bg-[#040404] text-white py-16">
-    <div class="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-        
-        <!-- Company Info -->
-        <div class="flex flex-col items-start">
+    <div class="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+        <!-- Logo and Description -->
+        <div data-aos="fade-up">
             <h2 class="text-3xl font-bold text-[#da100a] flex items-center mb-4">
-                <i class="fas fa-car text-white mr-3"></i> Rent A Car
+                Rent A Car
             </h2>
-            <p class="text-gray-400 mb-4">At Rent A Car, we believe that renting a car should be easy, affordable, and a pleasant experience. Whether you're going on a road trip or need a car for a business meeting, we have a wide selection of vehicles to meet your needs.</p>
-            <p class="text-gray-400">Explore our fleet and find the perfect car for your next adventure. Your journey starts with us!</p>
+            <p class="text-gray-400 mb-4">Your trusted car rental service for road trips, business, and adventure. Explore our fleet and start your journey with us today!</p>
         </div>
 
-        <!-- Navigation -->
-        <div>
-            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-link text-[#da100a] mr-3"></i> Quick Links
-            </h2>
-            <ul class="space-y-4 text-gray-300">
-                <li><a href="<?php echo home_url(); ?>" class="hover:text-[#da100a] transition duration-300 flex items-center">
-                    <i class="fas fa-home mr-3"></i> Home
-                </a></li>
-                <li><a href="<?php echo get_permalink(get_page_by_title('Cars')); ?>" class="hover:text-[#da100a] transition duration-300 flex items-center">
-                    <i class="fas fa-car-side mr-3"></i> Our Cars
-                </a></li>
-                <li><a href="<?php echo get_permalink(get_page_by_title('Contact')); ?>" class="hover:text-[#da100a] transition duration-300 flex items-center">
-                    <i class="fas fa-envelope mr-3"></i> Contact Us
-                </a></li>
-                <li><a href="<?php echo get_permalink(get_page_by_title('About')); ?>" class="hover:text-[#da100a] transition duration-300 flex items-center">
-                    <i class="fas fa-info-circle mr-3"></i> About Us
-                </a></li>
-                <li><a href="<?php echo get_permalink(get_page_by_title('FAQ')); ?>" class="hover:text-[#da100a] transition duration-300 flex items-center">
-                    <i class="fas fa-question-circle mr-3"></i> FAQ
-                </a></li>
+        <!-- Quick Links -->
+        <div data-aos="fade-up" data-aos-delay="100">
+            <h2 class="text-xl font-semibold text-white mb-4">Quick Links</h2>
+            <ul class="space-y-3 text-gray-300">
+                <?php
+                $pages = ['Home', 'Cars', 'Contact', 'About', 'FAQ'];
+                foreach ($pages as $page) {
+                    $page_url = get_permalink(get_page_by_title($page));
+                    if ($page_url) {
+                        echo '<li><a href="' . esc_url($page_url) . '" class="hover:text-[#da100a] transition duration-300">' . esc_html($page) . '</a></li>';
+                    }
+                }
+                ?>
             </ul>
         </div>
 
-        <!-- Social Media & Contact -->
-        <div>
-            <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
-                <i class="fas fa-share-alt text-[#da100a] mr-3"></i> Follow Us
-            </h2>
-            <div class="flex space-x-6 text-gray-300 mb-4">
-                <a href="#" class="hover:text-[#da100a] transition duration-300">
-                    <i class="fab fa-facebook-f text-xl"></i>
-                </a>
-                <a href="#" class="hover:text-[#da100a] transition duration-300">
-                    <i class="fab fa-twitter text-xl"></i>
-                </a>
-                <a href="#" class="hover:text-[#da100a] transition duration-300">
-                    <i class="fab fa-instagram text-xl"></i>
-                </a>
-                <a href="#" class="hover:text-[#da100a] transition duration-300">
-                    <i class="fab fa-linkedin-in text-xl"></i>
-                </a>
-            </div>
-
-            <div class="mt-4">
-                <p class="text-gray-400 flex items-center mb-2">
-                    <i class="fas fa-envelope text-[#da100a] mr-3"></i> support@rentacar.com
-                </p>
-                <p class="text-gray-400 flex items-center">
-                    <i class="fas fa-phone text-[#da100a] mr-3"></i> +1 234 567 890
-                </p>
-            </div>
-
-            <!-- Newsletter Section -->
-            <div class="mt-8">
-                <h3 class="text-[#da100a] text-xl font-semibold mb-4">Subscribe to Our Newsletter</h3>
-                <p class="text-gray-400 mb-4">Stay up-to-date with the latest offers, promotions, and new cars added to our fleet. Get exclusive deals straight to your inbox!</p>
-                <form action="#" method="POST" class="flex space-x-4">
-                    <input type="email" placeholder="Enter your email" class="p-3 text-gray-700 rounded-md w-3/4" required>
-                    <button type="submit" class="bg-[#da100a] text-white py-3 px-6 rounded-md hover:bg-white hover:text-[#da100a] transition duration-300">Subscribe</button>
-                </form>
-            </div>
+        <!-- Contact Info -->
+        <div data-aos="fade-up" data-aos-delay="200">
+            <h2 class="text-xl font-semibold text-white mb-4">Contact Us</h2>
+            <p class="text-gray-400 mb-2">
+                <i class="fas fa-envelope mr-2"></i>support@rentacar.com
+            </p>
+            <p class="text-gray-400 mb-2">
+                <i class="fas fa-phone mr-2"></i>+1 234 567 890
+            </p>
+            <p class="text-gray-400">
+                <i class="fas fa-map-marker-alt mr-2"></i>123 Main Street, City, Country
+            </p>
         </div>
 
+        <!-- Social Media and Newsletter -->
+        <div data-aos="fade-up" data-aos-delay="300">
+            <h2 class="text-xl font-semibold text-white mb-4">Follow Us</h2>
+            <div class="flex space-x-4 text-gray-300 mb-6">
+                <a href="#" aria-label="Facebook" class="hover:text-[#da100a] transition duration-300">
+                    <i class="fab fa-facebook-f text-xl"></i>
+                </a>
+                <a href="#" aria-label="Twitter" class="hover:text-[#da100a] transition duration-300">
+                    <i class="fab fa-twitter text-xl"></i>
+                </a>
+                <a href="#" aria-label="Instagram" class="hover:text-[#da100a] transition duration-300">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+            </div>
+            <h3 class="text-[#da100a] text-lg font-semibold mb-3">Subscribe to Our Newsletter</h3>
+            <p class="text-gray-400 mb-4">Get exclusive offers and updates delivered to your inbox.</p>
+            <form action="#" method="POST" class="flex">
+                <input type="email" name="email" placeholder="Enter your email" class="p-3 text-gray-700 rounded-l-md w-2/3 focus:outline-none focus:ring-2 focus:ring-[#da100a]" required aria-label="Email">
+                <button type="submit" class="bg-[#da100a] text-white py-3 px-4 rounded-r-md hover:bg-white hover:text-[#da100a] transition duration-300">Subscribe</button>
+            </form>
+        </div>
     </div>
 
-    <!-- Bottom Footer -->
-    <div class="text-center text-gray-500 mt-12 border-t border-gray-700 pt-6">
-        <p>&copy; <?php echo date('Y'); ?> Rent A Car. All rights reserved.</p>
-        <p class="text-gray-400 text-sm">Crafted with passion to make your journey smoother. Your satisfaction is our priority!</p>
+    <!-- Copyright Section -->
+    <div class="text-center text-gray-500 mt-12 border-t border-gray-700 pt-6" data-aos="fade-up" data-aos-delay="400">
+        <p>&copy; <?php echo date('Y'); ?> RoadRunner. All rights reserved.</p>
+        <p class="text-gray-400 text-sm">Designed by: Tiku, Olsi.</p>
     </div>
 </footer>
 
